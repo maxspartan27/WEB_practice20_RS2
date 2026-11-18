@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebStudio — Digital & Network Solutions | v1.5 (build 130) RS3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ==========================================================================
+           WEBSTUDIO ENGINE v1.5 (build 130) RS3 — CORE THEME VARIABLES
+           ========================================================================== */
+        :root {
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* Default: Cyber Dark RS3 */
+            --bg-primary: #090d16;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.78);
+            --bg-elevated: rgba(31, 41, 55, 0.88);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #06b6d4;
+            --accent-glow: rgba(59, 130, 246, 0.35);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+
+            /* Wallpaper & Overlay Dynamic Controls */
+            --wp-image: none;
+            --wp-blur: 8px;
+            --wp-overlay-color: 9, 13, 22;
+            --wp-overlay-opacity: 0.82;
+            --card-glass-blur: 16px;
+        }
+
+        /* Theme: Clean Light RS3 */
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-elevated: rgba(241, 245, 249, 0.95);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-primary: #2563eb;
+            --accent-secondary: #0891b2;
+            --accent-glow: rgba(37, 99, 235, 0.22);
+            --border-color: rgba(15, 23, 42, 0.1);
+            --shadow-card: 0 15px 35px -10px rgba(15, 23, 42, 0.08);
+            --wp-overlay-color: 248, 250, 252;
+        }
+
+        /* Theme: Midnight Matrix / Nord */
+        [data-theme="matrix"] {
+            --bg-primary: #05100a;
+            --bg-secondary: #091e13;
+            --bg-card: rgba(9, 30, 19, 0.8);
+            --bg-elevated: rgba(14, 44, 28, 0.9);
+            --text-primary: #ecfdf5;
+            --text-secondary: #6ee7b7;
+            --text-muted: #34d399;
+            --accent-primary: #10b981;
+            --accent-secondary: #14b8a6;
+            --accent-glow: rgba(16, 185, 129, 0.35);
+            --border-color: rgba(16, 185, 129, 0.22);
+            --shadow-card: 0 20px 40px -15px rgba(0, 0, 0, 0.75);
+            --wp-overlay-color: 5, 16, 10;
+        }
+
+        /* Theme: Immersive Scenic Glass */
+        [data-theme="scenic"] {
+            --bg-primary: #0b0f19;
+            --bg-secondary: rgba(15, 23, 42, 0.45);
+            --bg-card: rgba(15, 23, 42, 0.55);
+            --bg-elevated: rgba(30, 41, 59, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #ec4899;
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --border-color: rgba(255, 255, 255, 0.18);
+            --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+            --wp-overlay-color: 11, 15, 25;
+        }
+
+        /* ==========================================================================
+           BASE & DYNAMIC BACKGROUND LAYER
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.35s ease, color 0.35s ease;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .font-mono-code {
+            font-family: var(--font-mono);
+        }
+
+        /* Fixed Dynamic Wallpaper Layer */
+        #wallpaper-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image: var(--wp-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out, transform 0.5s ease;
+            will-change: transform;
+        }
+
+        /* Adjustable Blur & Opacity Overlay */
+        #wallpaper-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            backdrop-filter: blur(var(--wp-blur));
+            -webkit-backdrop-filter: blur(var(--wp-blur));
+            background-color: rgba(var(--wp-overlay-color), var(--wp-overlay-opacity));
+            transition: background-color 0.35s ease, backdrop-filter 0.25s ease;
+        }
+
+        /* Subtle Ambient Grid Pattern */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        }
+
+        /* ==========================================================================
+           REUSABLE RS3 GLASS & THEME COMPONENTS
+           ========================================================================== */
+        .rs3-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--card-glass-blur));
+            -webkit-backdrop-filter: blur(var(--card-glass-blur));
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rs3-card-hover:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 40px -15px var(--accent-glow);
+        }
+
+        .rs3-glass-header {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rs3-btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #ffffff;
+            box-shadow: 0 8px 20px -4px var(--accent-glow);
+            transition: all 0.25s ease;
+        }
+
+        .rs3-btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 12px 28px -4px var(--accent-glow);
+        }
+
+        .rs3-btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+
+        .rs3-btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .text-gradient-rs3 {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .border-theme {
+            border-color: var(--border-color);
+        }
+
+        .text-theme-primary {
+            color: var(--text-primary);
+        }
+
+        .text-theme-secondary {
+            color: var(--text-secondary);
+        }
+
+        .text-theme-muted {
+            color: var(--text-muted);
+        }
+
+        .bg-theme-elevated {
+            background-color: var(--bg-elevated);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        /* Range Input Styling */
+        input[type="range"] {
+            accent-color: var(--accent-primary);
+        }
+
+        /* Pulse Glow Animation */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.06); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- ==========================================================================
+         DYNAMIC WALLPAPER & OVERLAY SYSTEM (v1.5 RS3)
+         ========================================================================== -->
+    <div id="wallpaper-layer"></div>
+    <div id="wallpaper-overlay"></div>
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-[-1] opacity-35"></div>
+
+    <!-- ==========================================================================
+         STICKY NAVIGATION HEADER
+         ========================================================================== -->
+    <header class="sticky top-0 z-40 rs3-glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+            
+            <!-- Brand Logo & RS3 Build Badge -->
+            <div class="flex items-center gap-3">
+                <a href="#hero" class="flex items-center gap-2.5 group focus:outline-none">
+                    <div class="w-10 h-10 rounded-xl rs3-btn-primary flex items-center justify-center font-extrabold text-xl tracking-tighter shadow-lg">
+                        W
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold tracking-tight leading-none">
+                            Web<span class="text-gradient-rs3">Studio</span>
+                        </span>
+                        <span class="text-[10px] font-mono-code text-theme-muted tracking-widest uppercase mt-0.5">
+                            MaxNT Digital Core
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Interactive Version Badge -->
+                <button onclick="openModal('changelog-modal')" 
+                        title="Переглянути журнал змін v1.5 (build 130) RS3"
+                        class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono-code font-semibold bg-theme-elevated border border-theme hover:border-blue-500 transition-all cursor-pointer group">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 -ml-3.5"></span>
+                    <span class="text-theme-primary group-hover:text-blue-400 transition-colors">v1.5 (build 130) RS3</span>
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-theme-secondary">
+                <a href="#hero" class="hover:text-blue-500 transition-colors py-2">Студія</a>
+                <a href="#features" class="hover:text-blue-500 transition-colors py-2">Можливості RS3</a>
+                <a href="#portfolio" class="hover:text-blue-500 transition-colors py-2">Портфоліо</a>
+                <a href="#calculator" class="hover:text-blue-500 transition-colors py-2">Калькулятор</a>
+                <a href="#team" class="hover:text-blue-500 transition-colors py-2">Команда</a>
+                <a href="#contacts" class="hover:text-blue-500 transition-colors py-2">Контакти</a>
+            </nav>
+
+            <!-- Action Controls: Quick Light/Dark Toggle, Theme Studio Drawer, Order CTA -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Quick Light / Dark Switcher -->
+                <button id="quick-theme-btn" onclick="toggleQuickLightDark()" 
+                        aria-label="Перемкнути Світлу / Темну тему"
+                        title="Швидке перемикання Світла / Темна тема"
+                        class="p-2.5 rounded-xl rs3-btn-secondary flex items-center justify-center">
+                    <i id="quick-theme-icon" data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                </button>
+
+                <!-- Theme & Wallpaper Customizer Drawer Button -->
+                <button onclick="toggleThemeDrawer(true)" 
+                        class="px-3.5 py-2.5 rounded-xl rs3-btn-secondary flex items-center gap-2 text-xs sm:text-sm font-semibold">
+                    <i data-lucide="palette" class="w-4 h-4 text-blue-400"></i>
+                    <span class="hidden md:inline">Теми & Фони</span>
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono-code bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                        RS3
+                    </span>
+                </button>
+
+                <!-- Primary Order CTA -->
+                <button onclick="openModal('order-modal')" 
+                        class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl rs3-btn-primary text-xs sm:text-sm font-semibold">
+                    <i data-lucide="rocket" class="w-4 h-4"></i>
+                    <span>Замовити проєкт</span>
+                </button>
+
+                <!-- Mobile Hamburger Button -->
+                <button onclick="toggleMobileMenu()" 
+                        aria-label="Відкрити меню"
+                        class="lg:hidden p-2.5 rounded-xl rs3-btn-secondary">
+                    <i id="mobile-menu-icon" data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Collapsible Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-theme px-4 pt-3 pb-6 space-y-3 bg-opacity-95">
+            <div class="flex items-center justify-between py-2 border-b border-theme">
+                <span class="text-xs font-mono-code text-theme-muted">Поточна версія збірки:</span>
+                <button onclick="openModal('changelog-modal'); toggleMobileMenu();" class="text-xs font-mono-code font-bold text-blue-400 flex items-center gap-1">
+                    v1.5 (build 130) RS3 <i data-lucide="external-link" class="w-3 h-3"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <a href="#hero" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="home" class="w-4 h-4 text-blue-400"></i> Студія
+                </a>
+                <a href="#features" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i> Технології
+                </a>
+                <a href="#portfolio" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4 text-purple-400"></i> Портфоліо
+                </a>
+                <a href="#calculator" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-4 h-4 text-emerald-400"></i> Калькулятор
+                </a>
+                <a href="#team" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="users" class="w-4 h-4 text-amber-400"></i> Команда
+                </a>
+                <a href="#contacts" onclick="toggleMobileMenu()" class="px-3 py-2.5 rounded-xl rs3-btn-secondary text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="mail" class="w-4 h-4 text-rose-400"></i> Контакти
+                </a>
+            </div>
+            <button onclick="openModal('order-modal'); toggleMobileMenu();" class="w-full py-3 rounded-xl rs3-btn-primary font-semibold text-sm flex items-center justify-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i> Замовити розробку проєкту
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         MAIN CONTENT CONTAINER
+         ========================================================================== -->
+    <main>
+        <!-- ======================================================================
+             1. HERO SECTION (v1.5 build 130 RS3)
+             ====================================================================== -->
+        <section id="hero" class="relative py-14 sm:py-20 lg:py-28 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Column: Value Proposition & Controls -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <!-- Release Status Pill -->
+                        <div class="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 p-1.5 pr-4 rounded-full rs3-card text-xs">
+                            <span class="px-2.5 py-1 rounded-full rs3-btn-primary font-mono-code font-bold uppercase tracking-wider">
+                                Реліз RS3
+                            </span>
+                            <span class="font-mono-code text-theme-secondary font-medium">
+                                Оптимізоване ядро v1.5 (build 130)
+                            </span>
+                            <button onclick="toggleThemeDrawer(true)" class="text-blue-400 hover:underline font-semibold inline-flex items-center gap-1 ml-1">
+                                Спробувати живі шпалери <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <!-- Main Headline -->
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]">
+                            Ефективні цифрові та мережеві рішення для <span class="text-gradient-rs3">вашого бізнесу</span>
+                        </h1>
+
+                        <!-- Subheadline -->
+                        <p class="text-base sm:text-lg text-theme-secondary max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Модернізована платформа <strong class="text-theme-primary">WebStudio v1.5 (build 130) RS3</strong> поєднує високошвидкісну веб-архітектуру, адаптивний UI/UX дизайн із підтримкою динамічних фонів та надійну інфраструктуру рівня Enterprise.
+                        </p>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                            <button onclick="openModal('order-modal')" class="px-7 py-4 rounded-2xl rs3-btn-primary font-bold text-base flex items-center gap-2.5">
+                                <i data-lucide="zap" class="w-5 h-5"></i>
+                                <span>Замовити послугу</span>
+                            </button>
+                            <button onclick="toggleThemeDrawer(true)" class="px-6 py-4 rounded-2xl rs3-btn-secondary font-semibold text-base flex items-center gap-2.5">
+                                <i data-lucide="image" class="w-5 h-5 text-blue-400"></i>
+                                <span>Налаштувати тему та фон</span>
+                            </button>
+                            <a href="#calculator" class="px-5 py-4 rounded-2xl rs3-btn-secondary font-semibold text-sm flex items-center gap-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-emerald-400"></i>
+                                <span>Розрахувати бюджет</span>
+                            </a>
+                        </div>
+
+                        <!-- Quick Theme Presets Strip -->
+                        <div class="pt-4 border-t border-theme flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                            <span class="text-xs font-mono-code text-theme-muted uppercase tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-blue-400"></i> Швидкий вибір режиму:
+                            </span>
+                            <button onclick="applyTheme('light')" class="px-3 py-1.5 rounded-lg text-xs font-semibold rs3-btn-secondary flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Світла RS3
+                            </button>
+                            <button onclick="applyTheme('dark')" class="px-3 py-1.5 rounded-lg text-xs font-semibold rs3-btn-secondary flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Темна Cyber
+                            </button>
+                            <button onclick="applyTheme('matrix')" class="px-3 py-1.5 rounded-lg text-xs font-semibold rs3-btn-secondary flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Matrix Nord
+                            </button>
+                            <button onclick="applyScenicPreset(0)" class="px-3 py-1.5 rounded-lg text-xs font-semibold rs3-btn-secondary flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Імерсивне фото
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive RS3 Telemetry & Live Theme Preview Widget -->
+                    <div class="lg:col-span-5">
+                        <div class="rs3-card rounded-3xl p-6 sm:p-7 relative overflow-hidden">
+                            <!-- Top Window Bar -->
+                            <div class="flex items-center justify-between pb-4 mb-5 border-b border-theme">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                    <span class="ml-2 text-xs font-mono-code text-theme-muted">rs3-engine-monitor.sh</span>
+                                </div>
+                                <span id="active-theme-pill" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono-code font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                                    CYBER DARK
+                                </span>
+                            </div>
+
+                            <!-- System Performance Metrics -->
+                            <div class="grid grid-cols-2 gap-3.5 mb-5">
+                                <div class="p-4 rounded-2xl bg-theme-elevated border border-theme">
+                                    <div class="flex items-center justify-between text-xs text-theme-muted mb-1">
+                                        <span>Lighthouse UI</span>
+                                        <i data-lucide="gauge" class="w-4 h-4 text-emerald-400"></i>
+                                    </div>
+                                    <div class="text-2xl font-extrabold font-mono-code text-emerald-400">99.8%</div>
+                                    <div class="text-[11px] text-theme-secondary mt-1">Оптимізація RS3 Core</div>
+                                </div>
+
+                                <div class="p-4 rounded-2xl bg-theme-elevated border border-theme">
+                                    <div class="flex items-center justify-between text-xs text-theme-muted mb-1">
+                                        <span>Час відгуку DOM</span>
+                                        <i data-lucide="activity" class="w-4 h-4 text-blue-400"></i>
+                                    </div>
+                                    <div id="dom-latency-readout" class="text-2xl font-extrabold font-mono-code text-blue-400">12 мс</div>
+                                    <div class="text-[11px] text-theme-secondary mt-1">GPU Hardware Accel</div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Mini Wallpaper Carousel inside Hero Card -->
+                            <div class="p-4 rounded-2xl bg-theme-elevated border border-theme mb-5">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-theme-secondary flex items-center gap-1.5">
+                                        <i data-lucide="wallpaper" class="w-4 h-4 text-purple-400"></i> Миттєва зміна фонового зображення
+                                    </span>
+                                    <button onclick="clearWallpaper()" class="text-[11px] font-mono-code text-theme-muted hover:text-rose-400 transition-colors">
+                                        Скинути фон
+                                    </button>
+                                </div>
+                                <div id="hero-wp-mini-grid" class="grid grid-cols-5 gap-2">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+
+                            <!-- Build Information Footer -->
+                            <div class="flex items-center justify-between text-xs font-mono-code text-theme-secondary pt-2">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                                    Build 130 Verified
+                                </span>
+                                <button onclick="openModal('changelog-modal')" class="text-blue-400 hover:underline flex items-center gap-1">
+                                    Деталі релізу <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Live Key Achievements Counter Row -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-14">
+                    <div class="rs3-card rounded-2xl p-5 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold font-mono-code">145+</div>
+                            <div class="text-xs sm:text-sm text-theme-secondary">Реалізованих проєктів</div>
+                        </div>
+                    </div>
+
+                    <div class="rs3-card rounded-2xl p-5 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="palette" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold font-mono-code">4 Теми + HD</div>
+                            <div class="text-xs sm:text-sm text-theme-secondary">Адаптивні скіни та шпалери</div>
+                        </div>
+                    </div>
+
+                    <div class="rs3-card rounded-2xl p-5 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold font-mono-code">99.98%</div>
+                            <div class="text-xs sm:text-sm text-theme-secondary">Надійність мережі & SLA</div>
+                        </div>
+                    </div>
+
+                    <div class="rs3-card rounded-2xl p-5 text-center sm:text-left flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="git-branch" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold font-mono-code">v1.5 RS3</div>
+                            <div class="text-xs sm:text-sm text-theme-secondary">Збірка build 130 Stable</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             2. FEATURES & RS3 ARCHITECTURE OPTIMIZATION
+             ====================================================================== -->
+        <section id="features" class="py-16 sm:py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="px-3.5 py-1.5 rounded-full text-xs font-mono-code font-semibold bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                        CORE ENGINE v1.5 (BUILD 130) RS3
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold mt-4 tracking-tight">
+                        Наші переваги та технологічні інновації
+                    </h2>
+                    <p class="text-theme-secondary mt-3 text-base sm:text-lg">
+                        Кожен елемент інтерфейсу спроєктовано з увагою до деталей, швидкодії рендерингу та персоналізації під смак користувача.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Feature 1 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center mb-5">
+                                <i data-lucide="radar" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2.5">Увага до деталей</h3>
+                            <p class="text-sm text-theme-secondary leading-relaxed">
+                                Ідеальна піксельна сітка, продумана типографіка Inter + JetBrains Mono та глибокий аналіз бізнес-логіки перед початком розробки.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-theme">
+                            <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                                <span class="text-theme-muted">Точність UI/UX</span>
+                                <span class="text-blue-400 font-bold">100%</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-theme-elevated overflow-hidden">
+                                <div class="h-full bg-blue-500 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-5">
+                                <i data-lucide="clock" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2.5">Пунктуальність & Agile</h3>
+                            <p class="text-sm text-theme-secondary leading-relaxed">
+                                Чіткі спринти, прозорий контроль релізів (RS3 Pipeline) та автоматизоване CI/CD розгортання без затримок.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-theme">
+                            <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                                <span class="text-theme-muted">Дотримання SLA</span>
+                                <span class="text-emerald-400 font-bold">99.4%</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-theme-elevated overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full w-[99%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center mb-5">
+                                <i data-lucide="laptop-minimal" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2.5">Масштабоване планування</h3>
+                            <p class="text-sm text-theme-secondary leading-relaxed">
+                                Проєктування хмарної та мережевої архітектури з запасом продуктивності під високі навантаження та майбутнє розширення.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-theme">
+                            <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                                <span class="text-theme-muted">Оптимізація коду RS3</span>
+                                <span class="text-purple-400 font-bold">98.7%</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-theme-elevated overflow-hidden">
+                                <div class="h-full bg-purple-500 rounded-full w-[98%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mb-5">
+                                <i data-lucide="sparkles" class="w-7 h-7"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2.5">Сучасні теми & Glass UI</h3>
+                            <p class="text-sm text-theme-secondary leading-relaxed">
+                                Динамічний двигун тем v1.5 дозволяє миттєво перемикатися між світлим режимом та імерсивними шпалерами з розмиттям.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-theme">
+                            <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                                <span class="text-theme-muted">FPS Анімацій</span>
+                                <span class="text-cyan-400 font-bold">60 FPS</span>
+                            </div>
+                            <div class="w-full h-1.5 rounded-full bg-theme-elevated overflow-hidden">
+                                <div class="h-full bg-cyan-500 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             3. INTERACTIVE PORTFOLIO WITH FILTERING, SEARCH & LIGHTBOX
+             ====================================================================== -->
+        <section id="portfolio" class="py-16 sm:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Header & Controls -->
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+                    <div>
+                        <span class="px-3.5 py-1.5 rounded-full text-xs font-mono-code font-semibold bg-purple-500/15 text-purple-400 border border-purple-500/30">
+                            SHOWCASE & CASE STUDIES
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold mt-4 tracking-tight">
+                            Портфоліо реалізованих проєктів
+                        </h2>
+                        <p class="text-theme-secondary mt-2 text-base">
+                            Фільтруйте проєкти за напрямком або скористайтеся живим пошуком за технологіями.
+                        </p>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative w-full lg:w-80">
+                        <i data-lucide="search" class="w-4 h-4 text-theme-muted absolute left-4 top-1/2 -translate-y-1/2"></i>
+                        <input id="portfolio-search" type="text" 
+                               oninput="filterPortfolio()"
+                               placeholder="Пошук проєкту або стеку..."
+                               class="w-full pl-11 pr-4 py-3 rounded-2xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary placeholder:text-theme-muted">
+                    </div>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap items-center gap-2.5 mb-10" id="portfolio-filters">
+                    <button onclick="setPortfolioCategory('all')" data-cat="all" class="portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold rs3-btn-primary">
+                        Усі проєкти (9)
+                    </button>
+                    <button onclick="setPortfolioCategory('web')" data-cat="web" class="portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold rs3-btn-secondary">
+                        Веб-сайти
+                    </button>
+                    <button onclick="setPortfolioCategory('app')" data-cat="app" class="portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold rs3-btn-secondary">
+                        Веб-додатки & SaaS
+                    </button>
+                    <button onclick="setPortfolioCategory('design')" data-cat="design" class="portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold rs3-btn-secondary">
+                        UI/UX Дизайн
+                    </button>
+                    <button onclick="setPortfolioCategory('network')" data-cat="network" class="portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold rs3-btn-secondary">
+                        Мережеві & IoT системи
+                    </button>
+                </div>
+
+                <!-- Portfolio Grid Container -->
+                <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                    <!-- Dynamically rendered via JS -->
+                </div>
+
+                <!-- Empty Search State -->
+                <div id="portfolio-empty" class="hidden rs3-card rounded-3xl p-12 text-center my-6">
+                    <i data-lucide="folder-search" class="w-12 h-12 text-theme-muted mx-auto mb-3"></i>
+                    <h3 class="text-xl font-bold">Проєктів за вашим запитом не знайдено</h3>
+                    <p class="text-sm text-theme-secondary mt-1 mb-5">Спробуйте змінити категорію або очистити пошуковий запит.</p>
+                    <button onclick="resetPortfolioFilter()" class="px-5 py-2.5 rounded-xl rs3-btn-primary text-sm font-semibold">
+                        Показати всі проєкти
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             4. INTERACTIVE PROJECT COST & TIMELINE CALCULATOR (NEW IN v1.5 RS3)
+             ====================================================================== -->
+        <section id="calculator" class="py-16 sm:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="rs3-card rounded-3xl p-6 sm:p-10 lg:p-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                        
+                        <!-- Left: Interactive Configuration -->
+                        <div class="lg:col-span-7 space-y-7">
+                            <div>
+                                <span class="px-3 py-1 rounded-full text-xs font-mono-code font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                    RS3 SMART ESTIMATOR
+                                </span>
+                                <h2 class="text-2xl sm:text-3xl font-extrabold mt-3">
+                                    Інтерактивний калькулятор вартості проєкту
+                                </h2>
+                                <p class="text-sm sm:text-base text-theme-secondary mt-1">
+                                    Оберіть тип рішення та необхідні модулі для миттєвого розрахунку орієнтовного бюджету та термінів.
+                                </p>
+                            </div>
+
+                            <!-- Step 1: Project Type -->
+                            <div>
+                                <label class="block text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-3">
+                                    1. Оберіть тип проєкту:
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="calc-type-group">
+                                    <button type="button" onclick="selectCalcType('landing', 650, 7)" data-type="landing"
+                                            class="calc-type-btn p-4 rounded-2xl text-left border transition-all rs3-btn-secondary border-blue-500 ring-2 ring-blue-500/30">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-sm">Landing Page / Промо</span>
+                                            <span class="font-mono-code text-xs text-blue-400 font-bold">$650</span>
+                                        </div>
+                                        <p class="text-xs text-theme-secondary mt-1">Висококонверсійна сторінка з анімаціями</p>
+                                    </button>
+
+                                    <button type="button" onclick="selectCalcType('corporate', 1400, 16)" data-type="corporate"
+                                            class="calc-type-btn p-4 rounded-2xl text-left border transition-all rs3-btn-secondary">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-sm">Корпоративний портал</span>
+                                            <span class="font-mono-code text-xs text-blue-400 font-bold">$1,400</span>
+                                        </div>
+                                        <p class="text-xs text-theme-secondary mt-1">Багатосторінковий сайт компанії + CMS</p>
+                                    </button>
+
+                                    <button type="button" onclick="selectCalcType('ecommerce', 2300, 25)" data-type="ecommerce"
+                                            class="calc-type-btn p-4 rounded-2xl text-left border transition-all rs3-btn-secondary">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-sm">E-Commerce / Магазин</span>
+                                            <span class="font-mono-code text-xs text-blue-400 font-bold">$2,300</span>
+                                        </div>
+                                        <p class="text-xs text-theme-secondary mt-1">Каталог, кошик, онлайн-оплата, CRM</p>
+                                    </button>
+
+                                    <button type="button" onclick="selectCalcType('saas', 3500, 35)" data-type="saas"
+                                            class="calc-type-btn p-4 rounded-2xl text-left border transition-all rs3-btn-secondary">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-sm">SaaS / Мережевий Dashboard</span>
+                                            <span class="font-mono-code text-xs text-blue-400 font-bold">$3,500</span>
+                                        </div>
+                                        <p class="text-xs text-theme-secondary mt-1">Веб-додаток, API, телеметрія в реальному часі</p>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Additional RS3 Modules -->
+                            <div>
+                                <label class="block text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-3">
+                                    2. Додаткові можливості та оптимізація:
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <label class="flex items-center justify-between p-3.5 rounded-2xl rs3-btn-secondary cursor-pointer">
+                                        <span class="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+                                            <input type="checkbox" class="calc-addon w-4 h-4 rounded text-blue-500" data-price="300" data-days="3" onchange="updateCalculator()" checked>
+                                            <span>Система тем + Шпалери RS3</span>
+                                        </span>
+                                        <span class="font-mono-code text-xs text-emerald-400">+$300</span>
+                                    </label>
+
+                                    <label class="flex items-center justify-between p-3.5 rounded-2xl rs3-btn-secondary cursor-pointer">
+                                        <span class="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+                                            <input type="checkbox" class="calc-addon w-4 h-4 rounded text-blue-500" data-price="450" data-days="4" onchange="updateCalculator()">
+                                            <span>SEO Pro + Sitemap + Schema</span>
+                                        </span>
+                                        <span class="font-mono-code text-xs text-emerald-400">+$450</span>
+                                    </label>
+
+                                    <label class="flex items-center justify-between p-3.5 rounded-2xl rs3-btn-secondary cursor-pointer">
+                                        <span class="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+                                            <input type="checkbox" class="calc-addon w-4 h-4 rounded text-blue-500" data-price="550" data-days="5" onchange="updateCalculator()">
+                                            <span>Мультимовність (UA / EN / PL)</span>
+                                        </span>
+                                        <span class="font-mono-code text-xs text-emerald-400">+$550</span>
+                                    </label>
+
+                                    <label class="flex items-center justify-between p-3.5 rounded-2xl rs3-btn-secondary cursor-pointer">
+                                        <span class="flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+                                            <input type="checkbox" class="calc-addon w-4 h-4 rounded text-blue-500" data-price="700" data-days="6" onchange="updateCalculator()">
+                                            <span>AI Чат-бот / Telegram інтеграція</span>
+                                        </span>
+                                        <span class="font-mono-code text-xs text-emerald-400">+$700</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Number of Unique Layouts Slider -->
+                            <div>
+                                <div class="flex justify-between text-xs font-mono-code mb-2">
+                                    <span class="text-theme-muted uppercase">3. Кількість унікальних екранів / секцій:</span>
+                                    <span id="calc-pages-label" class="text-blue-400 font-bold">8 секцій</span>
+                                </div>
+                                <input id="calc-pages-range" type="range" min="3" max="25" value="8" oninput="updateCalculator()" class="w-full h-2 rounded-lg cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Right: Summary Receipt Card -->
+                        <div class="lg:col-span-5">
+                            <div class="p-6 sm:p-8 rounded-3xl bg-theme-elevated border border-theme space-y-6">
+                                <div class="flex items-center justify-between border-b border-theme pb-4">
+                                    <div>
+                                        <h3 class="text-lg font-bold">Кошторис проєкту</h3>
+                                        <p class="text-xs text-theme-muted font-mono-code">Розрахунок за тарифами RS3</p>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                                        <i data-lucide="receipt" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-theme-secondary">Базова розробка:</span>
+                                        <span id="summary-base" class="font-mono-code font-semibold">$650</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-theme-secondary">Додаткові модулі:</span>
+                                        <span id="summary-addons" class="font-mono-code font-semibold">$300</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-theme-secondary">Дизайн секцій (<span id="summary-pages-count">8</span> шт.):</span>
+                                        <span id="summary-pages-cost" class="font-mono-code font-semibold">$320</span>
+                                    </div>
+                                </div>
+
+                                <div class="pt-4 border-t border-theme flex items-baseline justify-between">
+                                    <div>
+                                        <span class="text-xs font-mono-code uppercase text-theme-muted block">Орієнтовна вартість:</span>
+                                        <span id="summary-total-price" class="text-3xl sm:text-4xl font-extrabold text-gradient-rs3 font-mono-code">$1,270</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs font-mono-code uppercase text-theme-muted block">Термін виконання:</span>
+                                        <span id="summary-total-days" class="text-lg font-bold font-mono-code text-emerald-400">~12 днів</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="submitCalculatedOrder()" class="w-full py-4 rounded-2xl rs3-btn-primary font-bold text-sm flex items-center justify-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    <span>Зафіксувати кошторис та замовити</span>
+                                </button>
+
+                                <p class="text-[11px] text-center text-theme-muted">
+                                    * Розрахунок включає безкоштовну техпідтримку протягом 60 днів та розгортання на хостингу.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             5. TEAM SECTION
+             ====================================================================== -->
+        <section id="team" class="py-16 sm:py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="px-3.5 py-1.5 rounded-full text-xs font-mono-code font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                        EXPERT CORE TEAM
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold mt-4 tracking-tight">
+                        Наша команда спеціалістів
+                    </h2>
+                    <p class="text-theme-secondary mt-2 text-base">
+                        Інженери, дизайнери та архітектори, які створили реліз WebStudio v1.5 (build 130) RS3.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+                    <!-- Member 1 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl overflow-hidden group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Ольга Рєпіна" 
+                                 onerror="this.src='https://placehold.co/600x600/1e293b/38bdf8?text=Frontend+Lead'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-semibold bg-black/70 text-white backdrop-blur-md">
+                                React / Next.js / RS3 UI
+                            </div>
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="text-lg font-bold">Ольга Рєпіна</h3>
+                            <p class="text-xs font-mono-code text-blue-400 mt-0.5 mb-4">Lead Frontend Developer</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="showToast('Профіль GitHub Ольги Рєпіної відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="GitHub"><i data-lucide="github" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Профіль LinkedIn відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Написати листа Ользі')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Email"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member 2 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl overflow-hidden group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Ігор Дем'яненко" 
+                                 onerror="this.src='https://placehold.co/600x600/1e293b/38bdf8?text=Product+Designer'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-semibold bg-black/70 text-white backdrop-blur-md">
+                                Design Systems / Figma
+                            </div>
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="text-lg font-bold">Ігор Дем'яненко</h3>
+                            <p class="text-xs font-mono-code text-purple-400 mt-0.5 mb-4">Senior Product Designer</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="showToast('Dribbble портфоліо відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Globe"><i data-lucide="globe" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Профіль LinkedIn відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Написати листа Ігорю')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Email"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member 3 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl overflow-hidden group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Микола Тарасов" 
+                                 onerror="this.src='https://placehold.co/600x600/1e293b/38bdf8?text=Network+Architect'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-semibold bg-black/70 text-white backdrop-blur-md">
+                                Cloud / DevOps / Security
+                            </div>
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="text-lg font-bold">Микола Тарасов</h3>
+                            <p class="text-xs font-mono-code text-emerald-400 mt-0.5 mb-4">Cloud & Network Architect</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="showToast('Профіль GitHub відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="GitHub"><i data-lucide="github" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Профіль LinkedIn відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Написати листа Миколі')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Email"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Member 4 -->
+                    <div class="rs3-card rs3-card-hover rounded-3xl overflow-hidden group">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Михайло Єрмаков" 
+                                 onerror="this.src='https://placehold.co/600x600/1e293b/38bdf8?text=UI+Engineer'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-[11px] font-mono-code font-semibold bg-black/70 text-white backdrop-blur-md">
+                                Motion UI / WebGL / 3D
+                            </div>
+                        </div>
+                        <div class="p-6 text-center">
+                            <h3 class="text-lg font-bold">Михайло Єрмаков</h3>
+                            <p class="text-xs font-mono-code text-cyan-400 mt-0.5 mb-4">Interactive UI Engineer</p>
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="showToast('Профіль GitHub відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="GitHub"><i data-lucide="github" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Профіль LinkedIn відкрито')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                                <button onclick="showToast('Написати листа Михайлу')" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Email"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================================================
+         6. FOOTER WITH SYSTEM STATUS & RELEASE INFO
+         ========================================================================== -->
+    <footer id="contacts" class="rs3-glass-header border-t border-theme pt-16 pb-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-theme">
+                
+                <!-- Col 1: Brand & Address -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl rs3-btn-primary flex items-center justify-center font-extrabold text-lg">
+                            W
+                        </div>
+                        <span class="text-2xl font-extrabold tracking-tight">
+                            Web<span class="text-gradient-rs3">Studio</span>
+                        </span>
+                    </div>
+                    <p class="text-sm text-theme-secondary leading-relaxed">
+                        Сучасна веб-студія повного циклу. Розробка високопродуктивних сайтів, хмарних додатків та мережевих інтерфейсів покоління RS3.
+                    </p>
+                    <div class="space-y-2 text-sm pt-1">
+                        <div class="flex items-center gap-2.5 text-theme-secondary">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-blue-400 shrink-0"></i>
+                            <span>м. Київ, пр-т Лесі Українки, 26 / Львівська обл.</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 text-theme-secondary">
+                            <i data-lucide="mail" class="w-4 h-4 text-blue-400 shrink-0"></i>
+                            <a href="mailto:info@devstudio.com" class="hover:text-blue-400 transition-colors">info@devstudio.com</a>
+                        </div>
+                        <div class="flex items-center gap-2.5 text-theme-secondary">
+                            <i data-lucide="phone" class="w-4 h-4 text-blue-400 shrink-0"></i>
+                            <a href="tel:+380961111111" class="hover:text-blue-400 transition-colors">+38 096 111 11 11</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Navigation & Themes -->
+                <div class="lg:col-span-4 grid grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-4">Навігація</h4>
+                        <ul class="space-y-2.5 text-sm text-theme-secondary">
+                            <li><a href="#hero" class="hover:text-blue-400 transition-colors">Головна</a></li>
+                            <li><a href="#features" class="hover:text-blue-400 transition-colors">Переваги RS3</a></li>
+                            <li><a href="#portfolio" class="hover:text-blue-400 transition-colors">Портфоліо</a></li>
+                            <li><a href="#calculator" class="hover:text-blue-400 transition-colors">Калькулятор</a></li>
+                            <li><a href="#team" class="hover:text-blue-400 transition-colors">Команда</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-4">Теми оформлення</h4>
+                        <ul class="space-y-2.5 text-sm text-theme-secondary">
+                            <li><button onclick="applyTheme('light')" class="hover:text-blue-400 transition-colors">Clean Light RS3</button></li>
+                            <li><button onclick="applyTheme('dark')" class="hover:text-blue-400 transition-colors">Cyber Dark (Default)</button></li>
+                            <li><button onclick="applyTheme('matrix')" class="hover:text-blue-400 transition-colors">Midnight Matrix</button></li>
+                            <li><button onclick="toggleThemeDrawer(true)" class="hover:text-blue-400 transition-colors">Галерея фонів (6)</button></li>
+                            <li><button onclick="openModal('changelog-modal')" class="text-blue-400 font-mono-code text-xs hover:underline">Changelog build 130</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Col 3: Newsletter & Release Telemetry -->
+                <div class="lg:col-span-4 space-y-4">
+                    <h4 class="text-xs font-mono-code uppercase tracking-wider text-theme-muted">Підписка на оновлення RS3</h4>
+                    <p class="text-sm text-theme-secondary">
+                        Отримуйте дайджест нових релізів, шаблонів архітектури та кейсів WebStudio.
+                    </p>
+                    <form onsubmit="handleNewsletter(event)" class="flex gap-2">
+                        <input id="newsletter-email" type="email" required placeholder="Ваш E-mail..." 
+                               class="flex-1 px-4 py-3 rounded-xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary">
+                        <button type="submit" class="px-5 py-3 rounded-xl rs3-btn-primary font-semibold text-sm flex items-center gap-1.5 shrink-0">
+                            <span>Підписатися</span>
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                    <div class="p-3.5 rounded-2xl bg-theme-elevated border border-theme flex items-center justify-between text-xs font-mono-code">
+                        <span class="flex items-center gap-2 text-theme-secondary">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            Система активна
+                        </span>
+                        <span class="text-blue-400 font-bold">v1.5 (build 130) RS3</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-theme-muted">
+                <p>© 2026 WebStudio / Ковалишин Максим. Усі права захищені. Оптимізовано для релізу <strong class="text-theme-primary font-mono-code">v1.5 (build 130) RS3</strong>.</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleThemeDrawer(true)" class="hover:text-blue-400 transition-colors">Налаштування вигляду</button>
+                    <span>•</span>
+                    <button onclick="openModal('changelog-modal')" class="hover:text-blue-400 transition-colors">Журнал збірки 130</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         SLIDE-OVER DRAWER: THEME & WALLPAPER STUDIO (v1.5 RS3)
+         ========================================================================== -->
+    <div id="theme-drawer-backdrop" onclick="toggleThemeDrawer(false)" 
+         class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <aside id="theme-drawer" 
+           class="fixed top-0 right-0 h-full w-full max-w-md rs3-card z-50 translate-x-full transition-transform duration-300 ease-out flex flex-col border-l border-theme">
+        
+        <!-- Drawer Header -->
+        <div class="p-5 sm:p-6 border-b border-theme flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                    <i data-lucide="palette" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-base leading-tight">Центр тем та фонів</h3>
+                    <p class="text-[11px] font-mono-code text-theme-muted">Engine v1.5 (build 130) RS3</p>
+                </div>
+            </div>
+            <button onclick="toggleThemeDrawer(false)" class="p-2 rounded-xl rs3-btn-secondary" aria-label="Закрити панель">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Scrollable Body -->
+        <div class="p-5 sm:p-6 overflow-y-auto flex-1 space-y-7">
+            
+            <!-- 1. Color Theme Selector -->
+            <div>
+                <label class="block text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-3">
+                    1. Колірна схема інтерфейсу
+                </label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="applyTheme('light')" data-theme-btn="light"
+                            class="theme-select-btn p-3.5 rounded-2xl rs3-btn-secondary text-left flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-500 flex items-center justify-center shrink-0">
+                            <i data-lucide="sun" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold">Світла RS3</div>
+                            <div class="text-[10px] text-theme-muted">Clean Light</div>
+                        </div>
+                    </button>
+
+                    <button onclick="applyTheme('dark')" data-theme-btn="dark"
+                            class="theme-select-btn p-3.5 rounded-2xl rs3-btn-secondary text-left flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="moon" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold">Темна Cyber</div>
+                            <div class="text-[10px] text-theme-muted">Cyber Dark</div>
+                        </div>
+                    </button>
+
+                    <button onclick="applyTheme('matrix')" data-theme-btn="matrix"
+                            class="theme-select-btn p-3.5 rounded-2xl rs3-btn-secondary text-left flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="terminal" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold">Матриця</div>
+                            <div class="text-[10px] text-theme-muted">Midnight Matrix</div>
+                        </div>
+                    </button>
+
+                    <button onclick="applyTheme('scenic')" data-theme-btn="scenic"
+                            class="theme-select-btn p-3.5 rounded-2xl rs3-btn-secondary text-left flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="Sparkles" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold">Імерсивне скло</div>
+                            <div class="text-[10px] text-theme-muted">Scenic Glass</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Background Wallpaper Gallery -->
+            <div>
+                <div class="flex items-center justify-between mb-3">
+                    <label class="text-xs font-mono-code uppercase tracking-wider text-theme-muted">
+                        2. Теми із фоновими зображеннями
+                    </label>
+                    <button onclick="clearWallpaper()" class="text-xs font-mono-code text-rose-400 hover:underline">
+                        Без зображення
+                    </button>
+                </div>
+                <div id="drawer-wallpaper-grid" class="grid grid-cols-2 gap-3">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- 3. Custom Wallpaper Image URL -->
+            <div>
+                <label class="block text-xs font-mono-code uppercase tracking-wider text-theme-muted mb-2">
+                    3. Власне зображення за URL
+                </label>
+                <div class="flex gap-2">
+                    <input id="custom-wp-url" type="url" placeholder="https://images.unsplash.com/..."
+                           class="flex-1 px-3.5 py-2.5 rounded-xl rs3-card text-xs focus:outline-none focus:border-blue-500 text-theme-primary">
+                    <button onclick="applyCustomWallpaperUrl()" class="px-4 py-2.5 rounded-xl rs3-btn-primary text-xs font-semibold shrink-0">
+                        Застосувати
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Backdrop Blur & Overlay Opacity Sliders -->
+            <div class="p-4 rounded-2xl bg-theme-elevated border border-theme space-y-4">
+                <div>
+                    <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                        <span class="text-theme-secondary">Розмиття фону (Blur):</span>
+                        <span id="blur-value-label" class="text-blue-400 font-bold">8px</span>
+                    </div>
+                    <input id="wp-blur-slider" type="range" min="0" max="24" step="1" value="8" 
+                           oninput="updateWallpaperEffects()" class="w-full h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs font-mono-code mb-1.5">
+                        <span class="text-theme-secondary">Щільність оверлею (Контраст):</span>
+                        <span id="opacity-value-label" class="text-blue-400 font-bold">82%</span>
+                    </div>
+                    <input id="wp-opacity-slider" type="range" min="15" max="95" step="1" value="82" 
+                           oninput="updateWallpaperEffects()" class="w-full h-2 rounded-lg cursor-pointer">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-5 border-t border-theme flex items-center justify-between gap-3">
+            <button onclick="resetAllAppearance()" class="px-4 py-2.5 rounded-xl rs3-btn-secondary text-xs font-semibold flex items-center gap-1.5">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Скинути за замовчуванням
+            </button>
+            <button onclick="toggleThemeDrawer(false)" class="px-5 py-2.5 rounded-xl rs3-btn-primary text-xs font-bold">
+                Готово
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MODAL 1: RELEASE NOTES / CHANGELOG v1.5 (build 130) RS3
+         ========================================================================== -->
+    <div id="changelog-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="rs3-card rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto border border-theme">
+            <div class="flex items-start justify-between gap-4 pb-4 border-b border-theme">
+                <div>
+                    <span class="px-2.5 py-1 rounded-md text-xs font-mono-code font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        STABLE RELEASE RS3
+                    </span>
+                    <h3 class="text-2xl font-extrabold mt-2">Журнал змін v1.5 (build 130) RS3</h3>
+                    <p class="text-xs font-mono-code text-theme-muted mt-0.5">Дата релізу: Листопад 2026 • Гілка: rs3-production-opt</p>
+                </div>
+                <button onclick="closeModal('changelog-modal')" class="p-2 rounded-xl rs3-btn-secondary">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 my-6 text-sm">
+                <div class="p-4 rounded-2xl bg-theme-elevated border border-theme">
+                    <h4 class="font-bold text-blue-400 flex items-center gap-2 mb-2">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Нові можливості візуального ядра
+                    </h4>
+                    <ul class="space-y-1.5 text-theme-secondary text-xs sm:text-sm list-disc list-inside">
+                        <li>Впроваджено миттєве перемикання на <strong>Світлу тему (Clean Light RS3)</strong>, <strong>Cyber Dark</strong>, <strong>Midnight Matrix</strong> та <strong>Scenic Glass</strong>.</li>
+                        <li>Додано галерею високоякісних фонових зображень із регулюванням глибини розмиття (0–24px) та прозорості фонового шару.</li>
+                        <li>Повне збереження користувацької конфігурації тем та шпалер у <code>localStorage</code>.</li>
+                    </ul>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-theme-elevated border border-theme">
+                    <h4 class="font-bold text-emerald-400 flex items-center gap-2 mb-2">
+                        <i data-lucide="cpu" class="w-4 h-4"></i> Оптимізація продуктивності (build 130)
+                    </h4>
+                    <ul class="space-y-1.5 text-theme-secondary text-xs sm:text-sm list-disc list-inside">
+                        <li>Консолідована архітектура з аппаратно-прискореними CSS-переходами (GPU-composited layers).</li>
+                        <li>Інтерактивний <strong>Калькулятор вартості проєкту</strong> з миттєвим перерахунком кошторису та дедлайнів.</li>
+                        <li>Жива фільтрація та пошук у портфоліо без перезавантаження сторінки.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-theme">
+                <button onclick="closeModal('changelog-modal'); toggleThemeDrawer(true);" class="px-4 py-2.5 rounded-xl rs3-btn-secondary text-xs sm:text-sm font-semibold">
+                    Відкрити налаштування тем
+                </button>
+                <button onclick="closeModal('changelog-modal')" class="px-5 py-2.5 rounded-xl rs3-btn-primary text-xs sm:text-sm font-bold">
+                    Зрозуміло
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL 2: ORDER SERVICE / CONTACT MODAL
+         ========================================================================== -->
+    <div id="order-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+        <div class="rs3-card rounded-3xl max-w-lg w-full p-6 sm:p-8 relative max-h-[92vh] overflow-y-auto border border-theme">
+            <div class="flex items-center justify-between pb-4 border-b border-theme">
+                <div>
+                    <h3 class="text-xl font-extrabold">Залиште свої дані, ми вам передзвонимо</h3>
+                    <p class="text-xs text-theme-secondary mt-0.5">Менеджер WebStudio зв'яжеться з вами протягом 15 хвилин</p>
+                </div>
+                <button onclick="closeModal('order-modal')" class="p-2 rounded-xl rs3-btn-secondary">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="order-form" onsubmit="handleOrderSubmit(event)" class="space-y-4 mt-5">
+                <div>
+                    <label class="block text-xs font-mono-code text-theme-secondary mb-1.5">Ім'я та Прізвище *</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="order-name" type="text" required placeholder="Олександр Коваленко"
+                               class="w-full pl-10 pr-4 py-3 rounded-xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono-code text-theme-secondary mb-1.5">Номер телефону *</label>
+                    <div class="relative">
+                        <i data-lucide="phone" class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="order-phone" type="tel" required placeholder="+38 (096) 000-00-00"
+                               class="w-full pl-10 pr-4 py-3 rounded-xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono-code text-theme-secondary mb-1.5">Електронна пошта *</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="order-email" type="email" required placeholder="client@company.ua"
+                               class="w-full pl-10 pr-4 py-3 rounded-xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-mono-code text-theme-secondary mb-1.5">Коментар або деталі проєкту</label>
+                    <textarea id="order-comment" rows="3" placeholder="Опишіть ваші побажання або обраний пакет..."
+                              class="w-full p-3.5 rounded-xl rs3-card text-sm focus:outline-none focus:border-blue-500 text-theme-primary"></textarea>
+                </div>
+
+                <label class="flex items-start gap-2.5 text-xs text-theme-secondary cursor-pointer pt-1">
+                    <input type="checkbox" required checked class="mt-0.5 rounded text-blue-500">
+                    <span>Погоджуюся з розсилкою та приймаю умови договору оферти WebStudio RS3.</span>
+                </label>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl rs3-btn-primary font-bold text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    <span>Відправити заявку</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL 3: PORTFOLIO PROJECT PREVIEW LIGHTBOX
+         ========================================================================== -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="rs3-card rounded-3xl max-w-2xl w-full overflow-hidden border border-theme">
+            <div class="relative h-64 sm:h-80">
+                <img id="modal-proj-img" src="" alt="Project Preview" class="w-full h-full object-cover">
+                <button onclick="closeModal('project-modal')" class="absolute top-4 right-4 p-2.5 rounded-xl bg-black/70 text-white hover:bg-black transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <span id="modal-proj-cat" class="absolute bottom-4 left-4 px-3 py-1 rounded-lg text-xs font-mono-code font-bold bg-blue-600 text-white"></span>
+            </div>
+            <div class="p-6 sm:p-8 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <h3 id="modal-proj-title" class="text-2xl font-extrabold"></h3>
+                    <span id="modal-proj-metrics" class="text-xs font-mono-code text-emerald-400 font-semibold"></span>
+                </div>
+                <p id="modal-proj-desc" class="text-sm sm:text-base text-theme-secondary leading-relaxed"></p>
+                <div id="modal-proj-tags" class="flex flex-wrap gap-2 pt-2"></div>
+                <div class="pt-4 border-t border-theme flex justify-end gap-3">
+                    <button onclick="closeModal('project-modal')" class="px-4 py-2.5 rounded-xl rs3-btn-secondary text-xs sm:text-sm font-semibold">
+                        Закрити
+                    </button>
+                    <button onclick="closeModal('project-modal'); openModal('order-modal');" class="px-5 py-2.5 rounded-xl rs3-btn-primary text-xs sm:text-sm font-bold flex items-center gap-1.5">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Замовити подібний проєкт
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         TOAST NOTIFICATION CONTAINER
+         ========================================================================== -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ==========================================================================
+         APPLICATION LOGIC (WebStudio v1.5 build 130 RS3)
+         ========================================================================== -->
+    <script>
+        /* --------------------------------------------------------------------------
+           1. CURATED HIGH-RES WALLPAPER PRESETS
+           -------------------------------------------------------------------------- */
+        const WALLPAPER_PRESETS = [
+            {
+                id: 'cyber-grid',
+                name: 'Cyberpunk Neon',
+                subtitle: 'Неонова мережа',
+                url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'scenic'
+            },
+            {
+                id: 'aurora-sky',
+                name: 'Mountain Aurora',
+                subtitle: 'Північне сяйво',
+                url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'matrix'
+            },
+            {
+                id: 'clean-arch',
+                name: 'Daylight Minimal',
+                subtitle: 'Світла архітектура',
+                url: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'light'
+            },
+            {
+                id: 'quantum-wave',
+                name: 'Abstract Waves',
+                subtitle: 'Квантові хвилі',
+                url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'scenic'
+            },
+            {
+                id: 'deep-space',
+                name: 'Deep Nebula',
+                subtitle: 'Космічний горизонт',
+                url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'dark'
+            },
+            {
+                id: 'pastel-studio',
+                name: 'Nordic Daylight',
+                subtitle: 'Світлий інтер’єр',
+                url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80',
+                thumb: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=60',
+                recommendedTheme: 'light'
+            }
+        ];
+
+        /* --------------------------------------------------------------------------
+           2. PORTFOLIO PROJECTS DATASET (v1.5 RS3)
+           -------------------------------------------------------------------------- */
+        const PORTFOLIO_ITEMS = [
+            {
+                id: 1,
+                title: 'Технокряк Enterprise Portal',
+                category: 'web',
+                categoryLabel: 'Веб-сайт',
+                metrics: 'Lighthouse 100 • +185% Трафіку',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
+                description: 'Корпоративна веб-платформа з високим рівнем захисту даних, інтерактивною аналітикою та адаптивним інтерфейсом RS3.',
+                tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'RS3 Core']
+            },
+            {
+                id: 2,
+                title: 'Постер New Orlean vs Golden Star',
+                category: 'design',
+                categoryLabel: 'UI/UX Дизайн',
+                metrics: 'Brand Identity • 3D Motion',
+                image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=900&q=80',
+                description: 'Розробка візуальної айдентики, медіа-постерів та дизайн-системи для спортивної трансляції високої чіткості.',
+                tags: ['Figma', 'Motion UI', 'Branding', 'WebGL']
+            },
+            {
+                id: 3,
+                title: 'Ресторан Seafood Smart App',
+                category: 'app',
+                categoryLabel: 'Веб-додаток',
+                metrics: 'Замовлення за 18 сек',
+                image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80',
+                description: 'Веб-додаток для преміального ресторану морепродуктів із бронюванням столиків у реальному часі та інтерактивним меню.',
+                tags: ['React', 'Node.js', 'Stripe Pay', 'PWA']
+            },
+            {
+                id: 4,
+                title: 'Проєкт Prime Audio Network',
+                category: 'network',
+                categoryLabel: 'Мережеві & IoT',
+                metrics: 'Ultra-Low Latency 8ms',
+                image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
+                description: 'Хмарна платформа потокової передачі аудіо та управління студійним обладнанням із шифруванням трафіку.',
+                tags: ['WebRTC', 'Cloudflare', 'IoT Telemetry', 'Rust']
+            },
+            {
+                id: 5,
+                title: 'Проєкт Boxes Logistics Cloud',
+                category: 'app',
+                categoryLabel: 'Веб-додаток',
+                metrics: 'Автоматизація 94% складів',
+                image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=80',
+                description: 'ERP-система обліку та маршрутизації вантажів із візуалізацією ланцюгів постачання в режимі реального часу.',
+                tags: ['Vue 3', 'GraphQL', 'Docker', 'PostgreSQL']
+            },
+            {
+                id: 6,
+                title: 'Inspiration has no Borders',
+                category: 'web',
+                categoryLabel: 'Веб-сайт',
+                metrics: 'Awwwards Nominee UI',
+                image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80',
+                description: 'Міжнародний креативний портал для дизайнерів та розробників з підтримкою імерсивних фонових тем.',
+                tags: ['HTML5', 'CSS Variables', 'GSAP', 'Multi-Theme']
+            },
+            {
+                id: 7,
+                title: 'Видання Limited Edition Hub',
+                category: 'design',
+                categoryLabel: 'UI/UX Дизайн',
+                metrics: '+210% час на сайті',
+                image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=900&q=80',
+                description: 'Інтерактивна цифрова публікація з мікроанімаціями, типографічною сіткою та адаптивним режимом читання День/Ніч.',
+                tags: ['Editorial UI', 'Typography', 'Dark/Light RS3']
+            },
+            {
+                id: 8,
+                title: 'Проєкт LAB Telemetry Core',
+                category: 'network',
+                categoryLabel: 'Мережеві & IoT',
+                metrics: '99.99% Uptime Cluster',
+                image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80',
+                description: 'Панель моніторингу серверних кластерів та мережевих вузлів MaxNT із миттєвими сповіщеннями про навантаження.',
+                tags: ['Grafana UI', 'WebSockets', 'Linux Kernel', 'SNMP']
+            },
+            {
+                id: 9,
+                title: 'Growing Business FinTech',
+                category: 'app',
+                categoryLabel: 'Веб-додаток',
+                metrics: 'Понад 45 000 активних бізнесів',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
+                description: 'Фінансова аналітична платформа для малого та середнього бізнесу з прогнозуванням прибутку та експортом звітів.',
+                tags: ['FinTech', 'Charts', 'Security', 'REST API']
+            }
+        ];
+
+        /* --------------------------------------------------------------------------
+           3. STATE MANAGEMENT & STORAGE
+           -------------------------------------------------------------------------- */
+        const STORAGE_KEY = 'webstudio_v1_5_build130_rs3_state';
+        let appState = {
+            theme: 'dark', // 'light' | 'dark' | 'matrix' | 'scenic'
+            wallpaperUrl: '',
+            blur: 8,
+            overlayOpacity: 82,
+            portfolioCategory: 'all',
+            calcType: 'landing',
+            calcBasePrice: 650,
+            calcBaseDays: 7
+        };
+
+        function loadSavedState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (err) {
+                console.warn('WebStudio RS3: Не вдалося прочитати localStorage', err);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (err) {
+                console.warn('WebStudio RS3: Не вдалося зберегти localStorage', err);
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           4. THEME & WALLPAPER ENGINE FUNCTIONS
+           -------------------------------------------------------------------------- */
+        function applyTheme(themeName, silent = false) {
+            appState.theme = themeName;
+            const root = document.documentElement;
+
+            if (themeName === 'dark') {
+                root.removeAttribute('data-theme');
+            } else {
+                root.setAttribute('data-theme', themeName);
+            }
+
+            // Update Quick Light/Dark Header Icon
+            const quickIcon = document.getElementById('quick-theme-icon');
+            if (quickIcon) {
+                quickIcon.setAttribute('data-lucide', themeName === 'light' ? 'moon' : 'sun');
+                lucide.createIcons();
+            }
+
+            // Update Hero Active Theme Pill
+            const pill = document.getElementById('active-theme-pill');
+            const labelMap = {
+                light: 'CLEAN LIGHT RS3',
+                dark: 'CYBER DARK',
+                matrix: 'MIDNIGHT MATRIX',
+                scenic: 'SCENIC GLASS'
+            };
+            if (pill) pill.textContent = labelMap[themeName] || 'RS3 CUSTOM';
+
+            // Highlight active theme button inside Drawer
+            document.querySelectorAll('.theme-select-btn').forEach(btn => {
+                const isCurrent = btn.getAttribute('data-theme-btn') === themeName;
+                btn.classList.toggle('ring-2', isCurrent);
+                btn.classList.toggle('ring-blue-500', isCurrent);
+                btn.classList.toggle('border-blue-500', isCurrent);
+            });
+
+            saveState();
+            if (!silent) {
+                showToast(`Активовано тему: ${labelMap[themeName]}`);
+            }
+        }
+
+        function toggleQuickLightDark() {
+            const nextTheme = appState.theme === 'light' ? 'dark' : 'light';
+            applyTheme(nextTheme);
+        }
+
+        function setWallpaper(url, label = 'Фонове зображення') {
+            appState.wallpaperUrl = url;
+            const root = document.documentElement;
+
+            if (url && url.trim() !== '') {
+                root.style.setProperty('--wp-image', `url("${url}")`);
+                // Slightly reduce overlay opacity automatically if too opaque so user sees the image
+                if (appState.overlayOpacity > 80) {
+                    appState.overlayOpacity = 70;
+                    const opSlider = document.getElementById('wp-opacity-slider');
+                    if (opSlider) opSlider.value = 70;
+                }
+            } else {
+                root.style.setProperty('--wp-image', 'none');
+            }
+
+            updateWallpaperEffects(true);
+            renderWallpaperGalleries();
+            saveState();
+
+            if (url) {
+                showToast(`Встановлено шпалери: ${label}`);
+            }
+        }
+
+        function applyScenicPreset(index) {
+            const preset = WALLPAPER_PRESETS[index];
+            if (!preset) return;
+            applyTheme(preset.recommendedTheme || 'scenic', true);
+            setWallpaper(preset.url, preset.name);
+        }
+
+        function clearWallpaper() {
+            setWallpaper('', '');
+            showToast('Фонове зображення вимкнено (Чистий режим)');
+        }
+
+        function applyCustomWallpaperUrl() {
+            const input = document.getElementById('custom-wp-url');
+            if (!input || !input.value.trim()) {
+                showToast('Введіть коректне посилання на зображення', 'warn');
+                return;
+            }
+            setWallpaper(input.value.trim(), 'Власний фон URL');
+            input.value = '';
+        }
+
+        function updateWallpaperEffects(silent = false) {
+            const blurSlider = document.getElementById('wp-blur-slider');
+            const opacitySlider = document.getElementById('wp-opacity-slider');
+
+            if (blurSlider) appState.blur = parseInt(blurSlider.value, 10);
+            if (opacitySlider) appState.overlayOpacity = parseInt(opacitySlider.value, 10);
+
+            const root = document.documentElement;
+            root.style.setProperty('--wp-blur', `${appState.blur}px`);
+            root.style.setProperty('--wp-overlay-opacity', (appState.overlayOpacity / 100).toFixed(2));
+
+            const blurLabel = document.getElementById('blur-value-label');
+            const opLabel = document.getElementById('opacity-value-label');
+            if (blurLabel) blurLabel.textContent = `${appState.blur}px`;
+            if (opLabel) opLabel.textContent = `${appState.overlayOpacity}%`;
+
+            if (!silent) saveState();
+        }
+
+        function resetAllAppearance() {
+            appState.theme = 'dark';
+            appState.wallpaperUrl = '';
+            appState.blur = 8;
+            appState.overlayOpacity = 82;
+
+            const blurSlider = document.getElementById('wp-blur-slider');
+            const opacitySlider = document.getElementById('wp-opacity-slider');
+            if (blurSlider) blurSlider.value = 8;
+            if (opacitySlider) opacitySlider.value = 82;
+
+            applyTheme('dark', true);
+            setWallpaper('', '');
+            updateWallpaperEffects(true);
+            saveState();
+            showToast('Налаштування вигляду скинуто до стандартних RS3');
+        }
+
+        function renderWallpaperGalleries() {
+            // 1. Drawer Gallery
+            const drawerGrid = document.getElementById('drawer-wallpaper-grid');
+            if (drawerGrid) {
+                drawerGrid.innerHTML = WALLPAPER_PRESETS.map((wp, idx) => {
+                    const isSelected = appState.wallpaperUrl === wp.url;
+                    return `
+                        <button onclick="applyScenicPreset(${idx})" 
+                                class="group relative h-24 rounded-2xl overflow-hidden border transition-all text-left ${isSelected ? 'border-blue-500 ring-2 ring-blue-500' : 'border-theme'}">
+                            <img src="${wp.thumb}" alt="${wp.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-2.5 flex flex-col justify-end">
+                                <span class="text-xs font-bold text-white leading-tight">${wp.name}</span>
+                                <span class="text-[10px] text-slate-300">${wp.subtitle}</span>
+                            </div>
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            // 2. Hero Mini Strip (First 5 presets)
+            const heroMini = document.getElementById('hero-wp-mini-grid');
+            if (heroMini) {
+                heroMini.innerHTML = WALLPAPER_PRESETS.slice(0, 5).map((wp, idx) => {
+                    const isSelected = appState.wallpaperUrl === wp.url;
+                    return `
+                        <button onclick="applyScenicPreset(${idx})" 
+                                title="${wp.name} (${wp.subtitle})"
+                                class="relative h-12 rounded-xl overflow-hidden border transition-all ${isSelected ? 'border-blue-400 ring-2 ring-blue-400 scale-105' : 'border-theme opacity-80 hover:opacity-100'}">
+                            <img src="${wp.thumb}" alt="${wp.name}" class="w-full h-full object-cover">
+                        </button>
+                    `;
+                }).join('');
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           5. PORTFOLIO RENDERING, FILTERING & LIGHTBOX
+           -------------------------------------------------------------------------- */
+        function setPortfolioCategory(cat) {
+            appState.portfolioCategory = cat;
+            document.querySelectorAll('.portfolio-tab').forEach(btn => {
+                const isMatch = btn.getAttribute('data-cat') === cat;
+                btn.className = `portfolio-tab px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold ${isMatch ? 'rs3-btn-primary' : 'rs3-btn-secondary'}`;
+            });
+            filterPortfolio();
+        }
+
+        function resetPortfolioFilter() {
+            const searchInput = document.getElementById('portfolio-search');
+            if (searchInput) searchInput.value = '';
+            setPortfolioCategory('all');
+        }
+
+        function filterPortfolio() {
+            const query = (document.getElementById('portfolio-search')?.value || '').toLowerCase().trim();
+            const cat = appState.portfolioCategory;
+
+            const filtered = PORTFOLIO_ITEMS.filter(item => {
+                const matchesCat = cat === 'all' || item.category === cat;
+                const matchesQuery = !query || 
+                    item.title.toLowerCase().includes(query) ||
+                    item.description.toLowerCase().includes(query) ||
+                    item.tags.some(t => t.toLowerCase().includes(query));
+                return matchesCat && matchesQuery;
+            });
+
+            const grid = document.getElementById('portfolio-grid');
+            const emptyState = document.getElementById('portfolio-empty');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(item => `
+                <article class="rs3-card rs3-card-hover rounded-3xl overflow-hidden flex flex-col justify-between group cursor-pointer"
+                         onclick="openProjectPreview(${item.id})">
+                    <div>
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${item.image}" alt="${item.title}" 
+                                 onerror="this.src='https://placehold.co/800x500/1e293b/38bdf8?text=WebStudio+RS3'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                                <span class="text-xs text-white font-medium flex items-center gap-1.5">
+                                    <i data-lucide="maximize-2" class="w-4 h-4 text-blue-400"></i> Натисніть для детального огляду
+                                </span>
+                            </div>
+                            <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[11px] font-mono-code font-bold bg-black/75 text-white backdrop-blur-md">
+                                ${item.categoryLabel}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-xs font-mono-code text-emerald-400 font-semibold mb-1">${item.metrics}</div>
+                            <h3 class="text-xl font-bold group-hover:text-blue-400 transition-colors">${item.title}</h3>
+                            <p class="text-sm text-theme-secondary mt-2 line-clamp-2">${item.description}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-3 border-t border-theme flex flex-wrap gap-1.5">
+                        ${item.tags.map(tag => `<span class="px-2.5 py-0.5 rounded-md text-[11px] font-mono-code bg-theme-elevated text-theme-secondary border border-theme">${tag}</span>`).join('')}
+                    </div>
+                </article>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function openProjectPreview(id) {
+            const proj = PORTFOLIO_ITEMS.find(p => p.id === id);
+            if (!proj) return;
+
+            document.getElementById('modal-proj-img').src = proj.image;
+            document.getElementById('modal-proj-cat').textContent = proj.categoryLabel;
+            document.getElementById('modal-proj-title').textContent = proj.title;
+            document.getElementById('modal-proj-metrics').textContent = proj.metrics;
+            document.getElementById('modal-proj-desc').textContent = proj.description;
+            document.getElementById('modal-proj-tags').innerHTML = proj.tags.map(t => 
+                `<span class="px-3 py-1 rounded-lg text-xs font-mono-code bg-theme-elevated border border-theme text-blue-400">${t}</span>`
+            ).join('');
+
+            openModal('project-modal');
+        }
+
+        /* --------------------------------------------------------------------------
+           6. INTERACTIVE COST CALCULATOR
+           -------------------------------------------------------------------------- */
+        function selectCalcType(type, price, days) {
+            appState.calcType = type;
+            appState.calcBasePrice = price;
+            appState.calcBaseDays = days;
+
+            document.querySelectorAll('.calc-type-btn').forEach(btn => {
+                const active = btn.getAttribute('data-type') === type;
+                btn.classList.toggle('border-blue-500', active);
+                btn.classList.toggle('ring-2', active);
+                btn.classList.toggle('ring-blue-500/30', active);
+            });
+
+            updateCalculator();
+        }
+
+        function updateCalculator() {
+            let addonsPrice = 0;
+            let addonsDays = 0;
+
+            document.querySelectorAll('.calc-addon:checked').forEach(cb => {
+                addonsPrice += parseInt(cb.getAttribute('data-price') || '0', 10);
+                addonsDays += parseInt(cb.getAttribute('data-days') || '0', 10);
+            });
+
+            const pages = parseInt(document.getElementById('calc-pages-range')?.value || '8', 10);
+            const pagesCost = pages * 40;
+            const pagesDays = Math.ceil(pages / 4);
+
+            const totalPrice = appState.calcBasePrice + addonsPrice + pagesCost;
+            const totalDays = appState.calcBaseDays + addonsDays + pagesDays;
+
+            document.getElementById('calc-pages-label').textContent = `${pages} секцій`;
+            document.getElementById('summary-base').textContent = `$${appState.calcBasePrice.toLocaleString()}`;
+            document.getElementById('summary-addons').textContent = `$${addonsPrice.toLocaleString()}`;
+            document.getElementById('summary-pages-count').textContent = pages;
+            document.getElementById('summary-pages-cost').textContent = `$${pagesCost.toLocaleString()}`;
+            document.getElementById('summary-total-price').textContent = `$${totalPrice.toLocaleString()}`;
+            document.getElementById('summary-total-days').textContent = `~${totalDays} днів`;
+        }
+
+        function submitCalculatedOrder() {
+            const totalPrice = document.getElementById('summary-total-price').textContent;
+            const totalDays = document.getElementById('summary-total-days').textContent;
+            const commentArea = document.getElementById('order-comment');
+            if (commentArea) {
+                commentArea.value = `Розрахунок з калькулятора RS3: Тип [${appState.calcType.toUpperCase()}], Орієнтовний бюджет: ${totalPrice}, Термін: ${totalDays}.`;
+            }
+            openModal('order-modal');
+        }
+
+        /* --------------------------------------------------------------------------
+           7. DRAWER, MODALS, FORMS & TOAST NOTIFICATIONS
+           -------------------------------------------------------------------------- */
+        function toggleThemeDrawer(open) {
+            const drawer = document.getElementById('theme-drawer');
+            const backdrop = document.getElementById('theme-drawer-backdrop');
+            if (open) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+            } else {
+                backdrop.classList.add('opacity-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            const isHidden = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden', !isHidden);
+            icon.setAttribute('data-lucide', isHidden ? 'x' : 'menu');
+            lucide.createIcons();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('order-name').value.trim();
+            closeModal('order-modal');
+            e.target.reset();
+            showToast(`Дякуємо, ${name}! Вашу заявку прийнято в роботу (build 130).`);
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            const email = emailInput.value.trim();
+            emailInput.value = '';
+            showToast(`Підписку для ${email} успішно активовано!`);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            const iconName = type === 'warn' ? 'alert-triangle' : 'check-circle-2';
+            const iconColor = type === 'warn' ? 'text-amber-400' : 'text-emerald-400';
+
+            toast.className = 'rs3-card p-4 rounded-2xl border border-theme shadow-2xl flex items-center gap-3 pointer-events-auto transform translate-y-4 opacity-0 transition-all duration-300';
+            toast.innerHTML = `
+                <i data-lucide="${iconName}" class="w-5 h-5 ${iconColor} shrink-0"></i>
+                <div class="text-xs sm:text-sm font-medium text-theme-primary flex-1">${message}</div>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-3', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3400);
+        }
+
+        /* --------------------------------------------------------------------------
+           8. INITIALIZATION ON WINDOW LOAD
+           -------------------------------------------------------------------------- */
+        window.onload = function () {
+            loadSavedState();
+
+            // Sync Sliders with saved state
+            const blurSlider = document.getElementById('wp-blur-slider');
+            const opacitySlider = document.getElementById('wp-opacity-slider');
+            if (blurSlider) blurSlider.value = appState.blur;
+            if (opacitySlider) opacitySlider.value = appState.overlayOpacity;
+
+            // Apply saved Theme & Wallpaper
+            applyTheme(appState.theme, true);
+            if (appState.wallpaperUrl) {
+                setWallpaper(appState.wallpaperUrl, '');
+            } else {
+                updateWallpaperEffects(true);
+                renderWallpaperGalleries();
+            }
+
+            // Render Portfolio & Calculator
+            filterPortfolio();
+            updateCalculator();
+
+            // Initialize Lucide Icons
+            lucide.createIcons();
+
+            // Simulate subtle telemetry fluctuation in Hero monitor
+            setInterval(() => {
+                const el = document.getElementById('dom-latency-readout');
+                if (el) {
+                    const ms = Math.floor(10 + Math.random() * 5);
+                    el.textContent = `${ms} мс`;
+                }
+            }, 3500);
+        };
+    </script>
+</body>
+</html>
